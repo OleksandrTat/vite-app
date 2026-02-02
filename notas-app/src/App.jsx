@@ -1,35 +1,65 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React from 'react';
+import Header from './Header';
+import StatsCard from './StatsCard';
+import NoteInput from './NoteInput';
+import FilterButtons from './FilterButtons';
+import NoteList from './NoteList';
+import { useNotes } from './useNotes';
 
-function App() {
-  const [count, setCount] = useState(0)
+export default function App() {
+  const {
+    newNote,
+    setNewNote,
+    editingId,
+    editText,
+    setEditText,
+    filter,
+    setFilter,
+    addNote,
+    deleteNote,
+    toggleComplete,
+    startEdit,
+    saveEdit,
+    filteredNotes,
+    stats,
+  } = useNotes();
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
+      <Header />
 
-export default App
+      <div className="max-w-4xl mx-auto px-6 py-12">
+        <StatsCard stats={stats} />
+
+        <NoteInput newNote={newNote} setNewNote={setNewNote} addNote={addNote} />
+
+        <FilterButtons filter={filter} setFilter={setFilter} />
+
+        <NoteList
+          filteredNotes={filteredNotes}
+          editingId={editingId}
+          editText={editText}
+          setEditText={setEditText}
+          toggleComplete={toggleComplete}
+          startEdit={startEdit}
+          saveEdit={saveEdit}
+          deleteNote={deleteNote}
+        />
+      </div>
+
+      {/* Animaciones CSS */}
+      <style>{`
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+            transform: translateY(10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+      `}</style>
+    </div>
+  );
+}
